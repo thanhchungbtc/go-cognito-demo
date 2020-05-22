@@ -19,13 +19,24 @@ type auth struct {
 }
 
 func (a *auth) Login(input *LoginInput) (*LoginOutput, error) {
-	output, err := a.cognito.Client.InitiateAuth(&cognitoidentityprovider.InitiateAuthInput{
-		ClientId: &a.cognito.AppClientID,
-		AuthFlow: aws.String(input.AuthFlow),
-		AuthParameters: map[string]*string{
+	var params map[string]*string
+	if input.AuthFlow == "REFRESH_TOKEN_AUTH" {
+		params = map[string]*string{
+			"REFRESH_TOKEN": aws.String(input.RefreshToken),
+		}
+	} else if input.AuthFlow == "USER_PASSWORD_AUTH" {
+		params = map[string]*string{
 			"USERNAME": aws.String(input.Username),
 			"PASSWORD": aws.String(input.Password),
-		},
+		}
+	} else {
+		return nil, errors.New("unsupport auth flow")
+	}
+
+	output, err := a.cognito.Client.InitiateAuth(&cognitoidentityprovider.InitiateAuthInput{
+		ClientId:       &a.cognito.AppClientID,
+		AuthFlow:       aws.String(input.AuthFlow),
+		AuthParameters: params,
 	})
 
 	if err != nil {
