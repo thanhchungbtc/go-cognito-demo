@@ -25,6 +25,7 @@ func New(auth usecase.Auth) *app {
 	api := r.Group("/api")
 	{
 		api.POST("/login", a.login)
+		api.GET("/logout", a.logout)
 		api.POST("/register", a.register)
 		api.POST("/confirm", a.confirm)
 

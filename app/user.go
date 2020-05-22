@@ -8,6 +8,7 @@ import (
 
 func me() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, "ok")
+		claims, _ := c.Get("claims")
+		c.JSON(http.StatusOK, claims)
 	}
 }

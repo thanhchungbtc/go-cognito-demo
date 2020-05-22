@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (a *app) logout(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "OK"})
+}
+
 func (a *app) login(c *gin.Context) {
 	var req usecase.LoginInput
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -15,6 +19,11 @@ func (a *app) login(c *gin.Context) {
 		return
 	}
 
+	if req.RefreshToken != "" {
+		req.AuthFlow = "REFRESH_TOKEN_AUTH"
+	} else {
+		req.AuthFlow = "USER_PASSWORD_AUTH"
+	}
 	out, err := a.auth.Login(&req)
 	if err != nil {
 		abortWithError(c, http.StatusBadRequest, err)
@@ -65,6 +74,6 @@ func authRequired(auth usecase.Auth) gin.HandlerFunc {
 			return
 		}
 
-		println(token)
+		c.Set("claims", token)
 	}
 }

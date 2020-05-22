@@ -5,24 +5,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cognito Demo</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+  <link rel="stylesheet" href="./css/bootstrap.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script src="js/http-vue-loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 
 </head>
 
 <body>
   <div id="app">
-    <login />
+    <router-view></router-view>
   </div>
 
   <script>
+    const router = new VueRouter({
+      mode: "hash",
+      routes: [{
+          path: "/",
+          component: httpVueLoader('profile.vue')
+        },
+        {
+          path: "/login",
+          component: httpVueLoader('login.vue')
+        },
+        {
+          path: "/register",
+          component: httpVueLoader('register.vue')
+        }, {
+          path: "/profile",
+          component: httpVueLoader('profile.vue')
+        }, {
+          path: "/confirm_auth",
+          name: "confirm_auth",
+          component: httpVueLoader('confirm_auth.vue'),
+          props: true,
+        },
+      ]
+    })
+
     new Vue({
       el: '#app',
-      components: {
-        login: httpVueLoader('login.vue')
-      }
+      router,
+
+      created() {
+        const data = window.localStorage.getItem("auth");
+        if (data) {
+          this.$router.push("/profile")
+          return;
+        }
+      },
     })
   </script>
+
 </body>
 
 </html>

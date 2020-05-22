@@ -59,8 +59,14 @@ type ConfirmOutput struct {
 }
 
 type Claims struct {
-	UserName      string
-	Email         string
-	Sub           string
-	EmailVerified bool
+	UserName      string `json:"user_name,omitempty"`
+	Email         string `json:"email,omitempty"`
+	Sub           string `json:"sub,omitempty"`
+	EmailVerified bool   `json:"email_verified,omitempty"`
+}
+
+type LogoutInput struct {
+	AccessToken string `json:"access_token,omitempty"`
+}
+type LogoutOutput struct {
 }
