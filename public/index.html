@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cognito Demo</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+  <script src="js/http-vue-loader.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    <login />
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      components: {
+        login: httpVueLoader('login.vue')
+      }
+    })
+  </script>
+</body>
+
+</html>
