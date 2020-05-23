@@ -16,6 +16,7 @@ User can authenticate with username and password using `USER_PASSWORD_AUTH` flow
 Example response
 
 ```json
+{
   "access_token": "...",
   "expires_in": 3600,
   "id_token": "...",
@@ -26,7 +27,7 @@ Example response
 
 ### Register & verification
 
-Vertification code will be sent as of the method you choose in the first step
+Vertification code will be sent as of the method you choose when create user pool
 
 ### Refresh token
 
@@ -83,7 +84,7 @@ const createInterceptor = () => {
 
 When creating an user pool, the public keys will be available at `https://cognito-idp.{region}.amazonaws.com/{user_pool_id}/.well-known/jwks.json`
 
-Find the public key with `kid` in the JWT's header. Leverage the existing jwt library, the parsing is simple as
+Find the public key that matches `kid` in the JWT's header. Leverage the existing jwt library, the parsing is simple as
 
 ```go
 jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
