@@ -61,8 +61,9 @@ module.exports = {
         this.$router.push("/profile");
       } catch (e) {
         this.error = e.response.data.error;
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     }
   }
 };
